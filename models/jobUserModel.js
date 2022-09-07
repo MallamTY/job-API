@@ -13,7 +13,13 @@ const jobUserSchema = new mongoose.Schema({
         required: [true, `Please provide an email address`],
         unique: true,
         minlength: 3,
-        match: ['\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}\b']
+       // match: ['\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}\b']
+    },
+    username: {
+        type: String,
+        required: [true, `Username is required`],
+        unique: [true, `Username already exists in the database`],
+        trim: true
     },
     password: {
         type: String,
@@ -21,7 +27,7 @@ const jobUserSchema = new mongoose.Schema({
         minlength: [8, `Password can't be more than 8 characters`]
 
     },
-    confirmpassword: {
+    confirmPassword: {
         type: String,
         required: [true, `Password field can't be empty`],
         minlength: [8, `Password can't be more than 8 characters`]
