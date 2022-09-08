@@ -51,16 +51,20 @@ const registerUser = async(req, res) => {
                  message:  `User already exist !!!`
              })
          }
-                const hashedPassword = await passwordEncrypter(password)
-                const hashedConfirmPassword = await passwordEncrypter(password)
+              
+                const salt = await bcrypt.genSalt(10)
+                const hashedPassword = await bcrypt.hash(password, salt)
+                hashedConfirmPassword = await bcrypt.hash(confirmPassword, salt)
 
            
-         user = await User.create({name,
-                                    email,
-                                    username,
-                                    password: hashedPassword, 
-                                    confirmPassword: hashedConfirmPassword
-                            })
+         const userHolder = {name,
+                    email,
+                    username,
+                    password: hashedPassword, 
+                    confirmPassword: hashedConfirmPassword
+            }
+
+         user = await User.create({...userHolder})
         res.status(StatusCodes.CREATED).json({
             status: `Success .....`,
             message: `Registration successful ...`,
