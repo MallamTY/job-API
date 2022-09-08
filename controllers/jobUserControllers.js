@@ -55,12 +55,14 @@ const registerUser = async(req, res) => {
                 const hashedConfirmPassword = await passwordEncrypter(password)
 
            
-         user = await User.create({name,
-                                    email,
-                                    username,
-                                    password: hashedPassword, 
-                                    confirmPassword: hashedConfirmPassword
-                            })
+         const userHolder = {name,
+                    email,
+                    username,
+                    password: hashedPassword, 
+                    confirmPassword: hashedConfirmPassword
+            }
+
+         user = await User.create({...userHolder})
         res.status(StatusCodes.CREATED).json({
             status: `Success .....`,
             message: `Registration successful ...`,
