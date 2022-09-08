@@ -2,7 +2,8 @@ const User = require("../models/jobUserModel")
 const {StatusCodes} = require('http-status-codes')
 const bcrypt = require('bcrypt')
 const validator = require('validator')
-const { passwordEncrypter } = require("../accessories/passwordEncrypt")
+const { createToken } = require("../accessories/tokenGenerator")
+
 
 const registerUser = async(req, res) => {
     const {name, email, username, password, confirmPassword} = req.body
@@ -53,9 +54,7 @@ const registerUser = async(req, res) => {
                 const hashedPassword = await passwordEncrypter(password)
                 const hashedConfirmPassword = await passwordEncrypter(password)
 
-            //    const salt = await bcrypt.genSalt(10)
-            //    const hashedPassword = await bcrypt.hash(password, salt)
-            //    hashedConfirmPassword = await bcrypt.hash(confirmPassword, salt)
+           
          user = await User.create({name,
                                     email,
                                     username,
@@ -102,10 +101,18 @@ const userLogin = async(req, res) => {
             message: `Invalid login credentials !!!`
         })
     }
+    var token = createToken(user.id, user.username)
+
+    if (!token) {
+        return res.status(StatusCodes.EXPECTATION_FAILED).json({
+            status: `Failed !!!`,
+            message: `Error generating token`
+        })
+    }
     return res.status(StatusCodes.OK).json({
         status: `Success ...`,
         message: `Login successful`,
-        user
+        token
     })
 }
 
