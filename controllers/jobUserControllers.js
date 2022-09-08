@@ -1,5 +1,6 @@
 const User = require("../models/jobUserModel")
 const {StatusCodes} = require('http-status-codes')
+const bcrypt = require('bcrypt')
 const validator = require('validator')
 const { passwordEncrypter } = require("../accessories/passwordEncrypt")
 
@@ -9,7 +10,7 @@ const registerUser = async(req, res) => {
     if (!name || !email, !username, !password, !confirmPassword) {
         return res.status(StatusCodes.NOT_ACCEPTABLE).json({
             status: 'Failed !!!!!!!!',
-            message: `All field mus be filed`
+            message: `All fields must be filed`
         })
     }
 
@@ -49,9 +50,12 @@ const registerUser = async(req, res) => {
                  message:  `User already exist !!!`
              })
          }
-         const hashedPassword = await passwordEncrypter(password)
-         const hashedConfirmPassword =await  passwordEncrypter(confirmPassword)
+                const hashedPassword = await passwordEncrypter(password)
+                const hashedConfirmPassword = await passwordEncrypter(password)
 
+            //    const salt = await bcrypt.genSalt(10)
+            //    const hashedPassword = await bcrypt.hash(password, salt)
+            //    hashedConfirmPassword = await bcrypt.hash(confirmPassword, salt)
          user = await User.create({name,
                                     email,
                                     username,
@@ -60,7 +64,8 @@ const registerUser = async(req, res) => {
                             })
         res.status(StatusCodes.CREATED).json({
             status: `Success .....`,
-            message: `Registration successful ...`
+            message: `Registration successful ...`,
+            user
         })
 
 
@@ -73,7 +78,35 @@ const registerUser = async(req, res) => {
 }
 
 const userLogin = async(req, res) => {
-    res.json(`Login successful ......`)
+    const {email, username, password} = req.body
+    if (!(email || username) || !password) {
+        return res.status(StatusCodes.NOT_ACCEPTABLE).json({
+            status: `Failed !!!!`,
+            message: `All fields must be filled ....`
+        })
+    }
+
+    var user = await User.findOne({$or: [{email}, {username}]});
+    console.log(user);
+    if (!user) {
+        return res.status(StatusCodes.BAD_REQUEST).json({
+            status: `Failed !!!`,
+            message: `Invalid login credentials !!!`
+        })
+    }
+    var match = await bcrypt.compare(password, user.password)
+
+    if (!match) {
+        return res.status(StatusCodes.NOT_ACCEPTABLE).json({
+            status: `Operation failed !!!`,
+            message: `Invalid login credentials !!!`
+        })
+    }
+    return res.status(StatusCodes.OK).json({
+        status: `Success ...`,
+        message: `Login successful`,
+        user
+    })
 }
 
 
