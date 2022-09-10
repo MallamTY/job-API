@@ -12,13 +12,17 @@ const jobSchema = new mongoose.Schema({
         type: String,
         required: [true, `Position applied for can't be empty`],
         trim: true,
-        minlength: [2, `Position field can't be less than 2 characters`]
+        minlength: [2, `Position field can't be less than 2 characters`],
+        enum: ['Frontend Engineer', 'Backend Engineer', 'Full stack Engineer']
     },
     status:{
         type: String,
-        enum: ['Completed', 'Uncompleted'],
+        enum: ['Pending', 'Interviewed', 'Employed'],
+        default: 'Pending',
         required: [true, `Status can't be empty`]
 
     }
     
-})
+}, {timestamps: true})
+
+module.exports = mongoose.model('Job', jobSchema)

@@ -65,10 +65,19 @@ const registerUser = async(req, res) => {
             }
 
          user = await User.create({...userHolder})
+         var token = createToken(user.id, user.username)
+
+         if (!token) {
+            return res.status(StatusCodes.EXPECTATION_FAILED).json({
+                status: `Failed !!!`,
+                message: `Error generating token`
+            })
+        }
         res.status(StatusCodes.CREATED).json({
             status: `Success .....`,
             message: `Registration successful ...`,
-            user
+            user,
+            token
         })
 
 
@@ -89,8 +98,10 @@ const userLogin = async(req, res) => {
         })
     }
 
-    var user = await User.findOne({$or: [{email}, {username}]});
-    console.log(user);
+    try {
+        var user = await User.findOne({$or: [{email}, {username}]});
+        console.log(user);
+
     if (!user) {
         return res.status(StatusCodes.BAD_REQUEST).json({
             status: `Failed !!!`,
@@ -118,6 +129,10 @@ const userLogin = async(req, res) => {
         message: `Login successful`,
         token
     })
+    } catch (error) {
+        res.status(StatusCodes.INTERNAL_SERVER_ERROR).json(error.message)
+    
+    }
 }
 
 
