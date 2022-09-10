@@ -1,5 +1,5 @@
 const express = require('express');
-//const userAuthenticator = require('../middleware/auth')
+const {userAuthenticator} = require('../middleware/userAuthurization')
 const { createJob, 
         getSingleJob, 
         deleteJob, 
@@ -7,10 +7,8 @@ const { createJob,
         updateJob } = require('../controllers/jobControllers');
 const router = express.Router()
 
-//router.use(userAuthenticator)
 
-
-router.route('/create-job').post(createJob)
+router.route('/create-job').post(userAuthenticator, createJob)
 
 router.route('/:id').get(getSingleJob, deleteJob, updateJob)
 

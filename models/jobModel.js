@@ -21,6 +21,11 @@ const jobSchema = new mongoose.Schema({
         default: 'Pending',
         required: [true, `Status can't be empty`]
 
+    },
+    createdBy: {
+        type: String,
+        trim: true,
+        required: true
     }
     
 }, {timestamps: true})

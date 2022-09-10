@@ -100,7 +100,6 @@ const userLogin = async(req, res) => {
 
     try {
         var user = await User.findOne({$or: [{email}, {username}]});
-        console.log(user);
 
     if (!user) {
         return res.status(StatusCodes.BAD_REQUEST).json({

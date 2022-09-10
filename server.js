@@ -11,7 +11,7 @@ const app = express()
 
 app.use(express.json())
 app.use(morgan('common'))
-app.use('/app/api/', jobRoutes)
+app.use('/app/api/',  jobRoutes)
 app.use('/app/api/', jobUserRoutes)
 
 

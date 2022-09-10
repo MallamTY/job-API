@@ -13,10 +13,10 @@ const getAllJobs = async(req, res) => {
 }
 
 const createJob = async(req, res) => {
-    const { user: {userId} } = req
+    const { user: {username} } = req
     try {
         
-        const job = await Job.create({...req.body, createdBy: userId})
+        const job = await Job.create({...req.body, createdBy: username})
         
         res.status(StatusCodes.CREATED).json({
             status: `Success ....`,
