@@ -1,4 +1,5 @@
 const express = require('express');
+const {userAuthenticator} = require('../middleware/userAuthurization')
 const { createJob, 
         getSingleJob, 
         deleteJob, 
@@ -7,7 +8,7 @@ const { createJob,
 const router = express.Router()
 
 
-router.route('/create-job').post(createJob)
+router.route('/create-job').post(userAuthenticator, createJob)
 
 router.route('/:id').get(getSingleJob, deleteJob, updateJob)
 
