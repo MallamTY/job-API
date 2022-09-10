@@ -10,9 +10,11 @@ const router = express.Router()
 
 router.route('/create-job').post(userAuthenticator, createJob)
 
-router.route('/:id').get(getSingleJob, deleteJob, updateJob)
+router.route('/:id').get(userAuthenticator, getSingleJob, deleteJob)
 
-router.route('/').get(getAllJobs)
+router.route('/:id').patch(userAuthenticator, updateJob)
+
+router.route('/').get(userAuthenticator, getAllJobs)
 
 
 module.exports = router
