@@ -4,7 +4,7 @@
   "description": "A project which provides Enpoints for keeping tracks of jobs progress of users",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js"
+    "start": "nodemon server.js"
   },
   "author": "MallamTY",
   "license": "ISC",

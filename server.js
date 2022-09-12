@@ -23,6 +23,11 @@ app.use(helmet())
 app.use(cors())
 app.use(xss())
 app.use(morgan('common'))
+
+
+app.get('/', (req, res) => {
+    res.send('Jobs-API by MallamTY')
+})
 app.use('/app/api/',  jobRoutes)
 app.use('/app/api/', jobUserRoutes)
 
