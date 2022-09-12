@@ -1,4 +1,4 @@
 node_modules/
 Procfile
-.env
-.ReadMe
+env
+ReadMe
