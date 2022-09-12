@@ -13,6 +13,10 @@ const app = express()
 
 
 
+app.get('/', (req, res) => {
+    res.send('Jobs-API by MallamTY')
+})
+
 app.set('ttrust proxy', 1)
 app.use(rateLimiter({
     windowMs: 15 * 60 * 1000,
@@ -25,9 +29,7 @@ app.use(xss())
 app.use(morgan('common'))
 
 
-app.get('/', (req, res) => {
-    res.send('Jobs-API by MallamTY')
-})
+
 app.use('/app/api/',  jobRoutes)
 app.use('/app/api/', jobUserRoutes)
 
