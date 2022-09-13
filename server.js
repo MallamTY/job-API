@@ -11,13 +11,20 @@ const { MONGO_URI, PORT } = require('./configurations/configurations');
 const { connectDB } = require('./db/dbConnect');
 const app = express()
 
+//documentation
+
+const swaggerUI = require('swagger-ui-express');
+const YAML = require('yamljs');
+const swaggerDocumentation = YAML.load('./documentation.yaml')
 
 
 app.get('/', (req, res) => {
     res.send('Jobs-API by MallamTY')
 })
 
-app.set('ttrust proxy', 1)
+app.set('trust proxy', 1)
+
+
 app.use(rateLimiter({
     windowMs: 15 * 60 * 1000,
     max: 100
@@ -27,11 +34,20 @@ app.use(helmet())
 app.use(cors())
 app.use(xss())
 app.use(morgan('common'))
+app.use('/app/api/',  jobRoutes)
+app.use('/app/api/', jobUserRoutes)
+
 
 
 
 app.use('/app/api/',  jobRoutes)
 app.use('/app/api/', jobUserRoutes)
+
+app.get('/', (req, res) => {
+    res.send('<h1>Jobs API By MallamTY<h1><a href="/api-docs">Click here for the Jobs-API documentation</a>')
+})
+
+app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDocumentation))
 
 
 
