@@ -18,8 +18,13 @@ const YAML = require('yamljs');
 const swaggerDocumentation = YAML.load('./documentation.yaml')
 
 
+app.get('/', (req, res) => {
+    res.send('Jobs-API by MallamTY')
+})
 
 app.set('trust proxy', 1)
+
+
 app.use(rateLimiter({
     windowMs: 15 * 60 * 1000,
     max: 100
@@ -32,6 +37,11 @@ app.use(morgan('common'))
 app.use('/app/api/',  jobRoutes)
 app.use('/app/api/', jobUserRoutes)
 
+
+
+
+app.use('/app/api/',  jobRoutes)
+app.use('/app/api/', jobUserRoutes)
 
 app.get('/', (req, res) => {
     res.send('<h1>Jobs API By MallamTY<h1><a href="/api-docs">Click here for the Jobs-API documentation</a>')
