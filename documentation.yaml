@@ -1,0 +1,289 @@
+openapi: 3.0.0
+info:
+  title: Job API
+  contact: {}
+  version: '1.0'
+servers:
+- url: https://jobs-api-mallamty.herokuapp.com/app/api
+  variables: {}
+paths:
+  /login:
+    post:
+      tags:
+      - Auth
+      summary: Userlogin
+      operationId: Userlogin
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              allOf:
+              - $ref: '#/components/schemas/UserloginRequest'
+              - example:
+                  username: MallamTY
+                  password: Dummy12345.
+            example:
+              username: MallamTY
+              password: Dummy12345.
+        required: true
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      security: []
+  /register:
+    post:
+      tags:
+      - Auth
+      summary: User Signup
+      operationId: UserSignup
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              allOf:
+              - $ref: '#/components/schemas/UserSignupRequest'
+              - example:
+                  name: Temitayo Sosanya
+                  email: tnsosanya@student.oauife.edu.ng
+                  username: MallamTY
+                  password: Dummy12345.
+                  confirmPassword: Dummy12345.
+            example:
+              name: Temitayo Sosanya
+              email: tnsosanya@student.oauife.edu.ng
+              username: MallamTY
+              password: Dummy12345.
+              confirmPassword: Dummy12345.
+        required: true
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      security: []
+  /create-job:
+    post:
+      tags:
+      - Jobs
+      summary: Create Job
+      operationId: CreateJob
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              allOf:
+              - $ref: '#/components/schemas/CreateJobRequest'
+              - example:
+                  company: Andela
+                  position: Full stack Engineer
+                  status: Employed
+            example:
+              company: Andela
+              position: Full stack Engineer
+              status: Employed
+        required: true
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      security:
+      - bearer: []
+  /{id}:
+    parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+        description: The job ID
+    get:
+      tags:
+      - Jobs
+      summary: getSingle Job
+      operationId: getSingleJob
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      security:
+      - bearer: []
+    patch:
+      tags:
+      - Jobs
+      summary: Update Job
+      operationId: UpdateJob
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              allOf:
+              - $ref: '#/components/schemas/UpdateJobRequest'
+              - example:
+                  company: MTN Group
+                  position: Frontend Enigneer
+                  status: Employed
+            example:
+              company: MTN Group
+              position: Frontend Enigneer
+              status: Employed
+        required: true
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      security:
+      - bearer: []
+    delete:
+      tags:
+      - Jobs
+      summary: Delete Job
+      operationId: DeleteJob
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      security:
+      - bearer: []
+  /:
+    get:
+      tags:
+      - Jobs
+      summary: getAll Job
+      operationId: getAllJob
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      security:
+      - bearer: []
+  /getby/status:
+    get:
+      tags:
+      - Jobs
+      summary: Get By Status
+      operationId: GetByStatus
+      parameters:
+      - name: status
+        in: query
+        description: ''
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: string
+          example: Pending
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      security:
+      - bearer: []
+components:
+  schemas:
+    UserloginRequest:
+      title: UserloginRequest
+      required:
+      - username
+      - password
+      type: object
+      properties:
+        username:
+          type: string
+        password:
+          type: string
+      example:
+        username: MallamTY
+        password: Dummy12345.
+    UserSignupRequest:
+      title: UserSignupRequest
+      required:
+      - name
+      - email
+      - username
+      - password
+      - confirmPassword
+      type: object
+      properties:
+        name:
+          type: string
+        email:
+          type: string
+        username:
+          type: string
+        password:
+          type: string
+        confirmPassword:
+          type: string
+      example:
+        name: Temitayo Sosanya
+        email: tnsosanya@student.oauife.edu.ng
+        username: MallamTY
+        password: Dummy12345.
+        confirmPassword: Dummy12345.
+    CreateJobRequest:
+      title: CreateJobRequest
+      required:
+      - company
+      - position
+      - status
+      type: object
+      properties:
+        company:
+          type: string
+        position:
+          type: string
+        status:
+          type: string
+      example:
+        company: MTN
+        position: Full stack Engineer
+        status: Employed
+    UpdateJobRequest:
+      title: UpdateJobRequest
+      required:
+      - company
+      - position
+      - status
+      type: object
+      properties:
+        company:
+          type: string
+        position:
+          type: string
+        status:
+          type: string
+      example:
+        company: MTN Group
+        position: Frontend Enigneer
+        status: Employed
+  securitySchemes:
+    bearer:
+      type: http
+      scheme: bearer
+security: []
+tags:
+- name: Misc
+  description: ''
+- name: Auth
+  description: ''
+- name: Jobs
+  description: ''
